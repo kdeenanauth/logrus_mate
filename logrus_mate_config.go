@@ -51,6 +51,7 @@ func (p *LogrusMateConfig) Serialize() (data []byte, err error) {
 	return json.Marshal(p)
 }
 
+// LoadLogrusMateConfig from the file at the specified path
 func LoadLogrusMateConfig(filename string) (conf LogrusMateConfig, err error) {
 	var data []byte
 
@@ -58,6 +59,11 @@ func LoadLogrusMateConfig(filename string) (conf LogrusMateConfig, err error) {
 		return
 	}
 
+	return LoadLogrusMateConfigFromBytes(data)
+}
+
+// LoadLogrusMateConfigFromBytes loads the configuration from the specified byte array
+func LoadLogrusMateConfigFromBytes(data []byte) (conf LogrusMateConfig, err error) {
 	tmpConf := LogrusMateConfig{}
 	if err = json.Unmarshal(data, &tmpConf); err != nil {
 		return
@@ -77,6 +83,7 @@ func LoadLogrusMateConfig(filename string) (conf LogrusMateConfig, err error) {
 	return
 }
 
+// Validate the configuration
 func (p *LogrusMateConfig) Validate() (err error) {
 	for _, logger := range p.Loggers {
 		for envName, conf := range logger.Config {
